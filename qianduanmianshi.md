@@ -19,7 +19,7 @@
 * [Call apply bind 手写](https://www.imooc.com/article/290456)
 * [原型链]()
 * [js时间循环机制event loop]()
-* [防抖和节流]()
+* [防抖和节流](http://jinlong.github.io/2016/04/24/Debouncing-and-Throttling-Explained-Through-Examples/)
 * [new的过程]()
 * [手写promise]()
 * [函数柯里化]()
@@ -27,3 +27,5 @@
 - [typeof 和 instenceof 的区别  最好手写一下]()
 - [手写axios]()
 
+- [手撕sort()]()
+- 

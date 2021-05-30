@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9种数组去重方式</title>
+</head>
+<body>
+    
+</body>
+    <script>
+        let arr =  [1,2,2,4,null,null,'3','abc',3,5,4,1,2,2,4,null,null,'3','abc',3,5,4]
+
+        // 1.利用对象的key唯一 
+
+        // 基于splice数据量大时随后都往前进位 效率上会有问题
+        function onekey(arr){
+            let obj={}
+            for(var i=0;i<arr.length;i++){
+                let item = arr[i]
+                if(obj[item] !== undefined){
+                    arr.splice(i,1)
+                    i--
+                    continue
+                }
+                obj[item] = item
+            }
+            console.log(obj)
+
+            console.log(Object.values(obj))
+            console.log(Object.keys(obj))
+            console.log(Object.entries(obj))
+        }
+
+        // onekey(arr)
+
+        // 2.如果当前位置与前面重复则 与数组末最后一位交换位置 同时数组长度-- 消除重复项 效率比splice高
+        function toend(arr){
+            let obj={}
+            for(var i=0;i<arr.length;i++){
+                let item = arr[i]
+                if(obj[item] !== undefined){
+                    //arr.splice(i,1)
+                    arr[i] = arr[arr.length-1]
+                    arr.length--
+                    i--
+                    continue
+                }
+                obj[item] = item
+            }
+            console.log(obj)
+        }
+
+        // toend(arr)
+
+        // 3.filter()方法：创建一个新数组，新数组中的元素是指定数组中符合某种条件的所有元素。如果没有符合条件的元素则返回空数组。
+        function filterOne(arr){
+            return arr.filter((item,index) =>{
+                //console.log(item,index)
+                return arr.indexOf(item) === index
+            })
+        }
+        var oneArr= filterOne(arr)
+        // console.log(oneArr)
+        // 注意 =>后面不加括号 {} 里面的自动最为返回值
+        var one2Arr = arr.filter((item,index) => arr.indexOf(item) === index)
+        // console.log(one2Arr)
+
+
+        // 4.hasOwnProperty()方法：返回一个布尔值，表示对象自身属性中是否具有指定的属性  原理：利用对象的键名不可重复的特点
+        function fiterhasOwn(arr){
+            let obj = {}
+
+            return arr.filter((item) =>{
+                //console.log(typeof item)
+                //console.log(typeof item + item)
+                // = true 可以避免item值为null 返回false
+                return obj.hasOwnProperty(typeof item + item)?false:(obj[typeof item + item]=true)
+            })
+        }
+        // console.log(fiterhasOwn(arr))
+
+        //5. Array.reduce + Array.includes
+        // reduce()方法：接收一个函数作为累加器，数组中的每个值从左到右开始计算，最终计算为一个值。
+        // 语法：arr.reduce(function(total, currValue, currIndex, arr), initValue)
+        function reduceOne(arr){
+            return arr.reduce((arra,arri)=>{
+                        // console.log(arra,arri)
+                        return arra.includes(arri)?arra:[...arra,arri]
+                    },[])
+        }
+        // console.log(reduceOne(arr))
+        // 6. Array.indexOf
+
+        // indexOf()方法：返回数组中某个指定的元素位置。该方法遍历数组，查找有无对应元素并返回元素第一次出现的索引，未找到指定元素则返回 -1。
+        function indexOfOne(arr){
+            let newArr = []
+            for(var i=0;i<arr.length;i++){
+                newArr.indexOf(arr[i]) == -1? newArr.push(arr[i]):true
+            }
+            console.log(newArr)
+        }
+        // 注意不能直接返回arr.forEach  的返回值 返回的是undefined
+        function indexOfOne2(arr){
+            let newArr = []
+            arr.forEach(
+            (item,index)=>
+                newArr.indexOf(item) == -1?
+                newArr.push(item):
+                ''
+            )
+            return newArr
+
+            
+        }
+        // console.log(indexOfOne2(arr))
+
+        // 7. Array.includes
+        //    includes()方法：用来判断一个数组是否包含一个指定的值，如果是返回 true，否则false。
+        function includesOne(arr){
+            let newArr = []
+            for(var i=0;i<arr.length;i++){
+                if(!newArr.includes(arr[i])) {
+                    newArr.push(arr[i])
+                }
+            }
+            return newArr
+        }
+        //console.log(includesOne(arr))
+        function includesOne2(arr){
+            let newArr = []
+            arr.forEach(
+                (item,index) => 
+                !newArr.includes(arr[index])?
+                newArr.push(arr[index]):
+                console.log("已经存在了",arr[index])
+            )
+            return newArr
+        }
+        // console.log(includesOne2(arr))
+
+        // 8. new Set + 扩展运算符 || Array.from
+        // ES6 提供了新的数据结构Set。类似于数组，但是成员的值都是唯一的，没有重复的值。
+        // Set本身是一个构造函数，可以接受一个具有iterable接口数据结构作为参数（如数组，字符串），用来初始化。
+        // console.log([...new Set(arr)])
+        // console.log(Array.from(new Set(arr)))
+
+        // console.log([...new Set('ababababcsddbbdbdnndndnndndnd')].join(''))  //'abc'
+        // 9. new Map
+
+        // ES6 提供了新的数据结构Map。类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
+        // set方法设置键名key对应的键值为value，然后返回整个Map结构。如果key已经有值，则键值会被更新，否则就新生成该键。
+        // get方法读取key对应的键值，如果找不到key，返回undefined。
+        // has方法返回一个布尔值，表示某个键是否在当前Map对象之中。
+        function mapOne(arr){
+            let map = new Map()
+            for(var i=0;i<arr.length;i++){
+                if(!map.has(arr[i])){
+                    map.set(arr[i],true)
+                }
+            }
+            return [...map.keys()]
+        }
+        //map没有转成数组的方法吗 lj
+        console.log(mapOne(arr))
+
+    </script>
+</html>
