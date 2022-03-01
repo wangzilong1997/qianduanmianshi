@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lengthOfLastWord</title>
+</head>
+<body>
+    
+</body>
+
+    <script>
+        /**
+         * @param {string} s
+         * @return {number}
+         */
+        
+
+         var lengthOfLastWord = function(s) {
+            let LsArr = s.split(" ").reverse()
+            console.log(LsArr)
+            for(var i=0;i<LsArr.length;i++){
+                console.log(LsArr[i])
+                if(!(LsArr[i] == " " || LsArr[i] == "")){
+                    console.log("3333",LsArr[i])
+                    return LsArr[i].length
+                }
+            }
+        };
+        console.log(lengthOfLastWord("a "))
+    </script>
+</html>
